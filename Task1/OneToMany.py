@@ -2,6 +2,7 @@ from mpi4py import MPI
 from random import randint
 import sys
 
+
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 workers = comm.Get_size() - 1
