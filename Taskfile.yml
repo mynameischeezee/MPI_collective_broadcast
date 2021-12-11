@@ -1,0 +1,14 @@
+version: '3'
+
+dotenv: ['.env']
+
+tasks:
+  default:
+    desc: Info
+    cmds:
+      - task -l
+
+  run_one_to_many:
+    desc: run first task
+    cmds:
+      - mpiexec -n $COUNT_PROCESSES python Task1/Task1.py $MATRIX_DIMENSION
