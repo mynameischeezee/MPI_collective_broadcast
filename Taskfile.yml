@@ -8,7 +8,18 @@ tasks:
     cmds:
       - task -l
 
-  run_one_to_many:
-    desc: run first task
+
+  run_one_to_one:
+    desc:
     cmds:
-      - mpiexec -n $COUNT_PROCESSES python Task1/Task1.py $MATRIX_DIMENSION
+      - mpiexec -n $COUNT_PROCESSES python Task1/OneToOne.py $MATRIX_DIMENSION
+
+  run_one_to_many:
+    desc:
+    cmds:
+      - mpiexec -n $COUNT_PROCESSES python Task1/OneToMany.py $MATRIX_DIMENSION
+
+  run_many_to_many:
+    desc:
+    cmds:
+      - mpiexec -n $COUNT_PROCESSES python Task1/ManyToMany.py $MATRIX_DIMENSION
