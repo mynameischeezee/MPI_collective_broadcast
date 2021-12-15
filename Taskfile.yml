@@ -23,3 +23,35 @@ tasks:
     desc:
     cmds:
       - mpiexec -n $COUNT_PROCESSES python Task1/ManyToMany.py $MATRIX_DIMENSION
+
+  run1-t:
+    desc: blocking matrix multiplication
+    cmds:
+      - mpiexec -n $COUNT_PROCESSES python -m cProfile -o res/OneToOne-$MATRIX_DIMENSION-$COUNT_PROCESSES.prof Task1/OneToOne.py $MATRIX_DIMENSION
+
+  run2-t:
+    desc: gather_scatter_mpi matrix multiplication
+    deps: [run1-t]
+    cmds:
+      - mpiexec -n $COUNT_PROCESSES python -m cProfile -o res/OneToMany-$MATRIX_DIMENSION-$COUNT_PROCESSES.prof Task1/OneToMany.py $MATRIX_DIMENSION
+
+  test:
+    desc: Investigate effectiveness
+    deps: [run2-t]
+    cmds:
+      - mpiexec -n $COUNT_PROCESSES python -m cProfile -o res/ManyToMany-$MATRIX_DIMENSION-$COUNT_PROCESSES.prof Task1/ManyToMany.py $MATRIX_DIMENSION
+
+  tuna_one_to_one:
+    desc: Visualizing Python runtime blocking matrix multiplication
+    cmds:
+      - tuna res/OneToOne-$MATRIX_DIMENSION-$COUNT_PROCESSES.prof
+
+  tuna_one_to_many:
+    desc: Visualizing Python runtime gather_scatter matrix multiplication
+    cmds:
+      - tuna res/OneToMany-$MATRIX_DIMENSION-$COUNT_PROCESSES.prof
+
+  tuna_many_to_many:
+    desc: Visualizing Python runtime alltoall matrix multiplication
+    cmds:
+      - tuna res/ManyToMany-$MATRIX_DIMENSION-$COUNT_PROCESSES.prof
